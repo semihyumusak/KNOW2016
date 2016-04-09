@@ -13,28 +13,24 @@ def populateFeatureAll (featDict, queryCache, cacheFile):
     getAttributeWithCaching("SELECT ?o WHERE { <"+URI+"> <http://dbpedia.org/ontology/genre> ?o}",featDict, queryCache, cacheFile)
     #5-LANGUAGE
     getAttributeWithCaching("SELECT ?o WHERE { <"+URI+"> <http://dbpedia.org/ontology/language> ?o}",featDict, queryCache, cacheFile)
-    #6- How many other albums producer have?
-    getNumericAttributeWithCaching( "SELECT count(?s) as ?o WHERE {  <"+URI+"> <http://dbpedia.org/ontology/producer> ?o1. ?s  <http://dbpedia.org/ontology/producer> ?o1}", featDict, 40, 40, "Producer",featDict['uri'] , queryCache, cacheFile)
     #7- Who recorded this album?
     getAttributeWithCaching("SELECT ?o WHERE { <"+URI+"> <http://dbpedia.org/ontology/recordLabel> ?o}",featDict, queryCache, cacheFile)
-    #8- Are long albums more popular than others?
-    getNumericAttributeWithCaching( "SELECT ?o WHERE { <"+URI+"> <http://dbpedia.org/ontology/runtime> ?o}", featDict, 2800, 2800, "Runtime" ,featDict['uri'] , queryCache, cacheFile)
-    #9-Number of awards of an artist
-    getNumericAttributeWithCaching("SELECT  count(?o1) as ?o WHERE { <"+URI+">  <http://dbpedia.org/ontology/artist> ?artist. ?artist <http://dbpedia.org/property/award> ?o1}", featDict, 3, 3, "ArtistAward" ,featDict['uri'] , queryCache, cacheFile)
     #10-Who is the director of the album?
     getAttributeWithCaching("SELECT ?o WHERE { <"+URI+"> <http://dbpedia.org/property/director> ?o}",featDict, queryCache, cacheFile)
     #11-Region
     getAttributeWithCaching("SELECT ?o WHERE { <"+URI+"> <http://dbpedia.org/property/region> ?o}",featDict, queryCache, cacheFile)
     #12-studio
     getAttributeWithCaching("SELECT ?o WHERE { <"+URI+"> <http://dbpedia.org/property/studio> ?o}",featDict, queryCache, cacheFile)
-    #13-totalLength
-    getNumericAttributeWithCaching("SELECT ?o WHERE { <"+URI+"> <http://dbpedia.org/property/totalLength> ?o}", featDict, 2900, 2900, "TotalLength" ,featDict['uri'] , queryCache, cacheFile)
     #14-song writer
     getAttributeWithCaching("SELECT ?o WHERE { <"+URI+"> <http://dbpedia.org/property/writer> ?o}",featDict, queryCache, cacheFile)
     #15-Reviewers
     getAttributeWithCaching("SELECT ?o WHERE { <"+featDict['uri']+"> <http://dbpedia.org/property/rev> ?o}",featDict, queryCache, cacheFile)
     #16- Topics related to the artist of the album
     getAttributeWithCaching("select ?o where {<"+featDict['uri']+"> <http://dbpedia.org/ontology/artist> ?o1. ?o1 <http://purl.org/dc/terms/subject> ?o}",featDict, queryCache, cacheFile)
+    #8- Are long albums more popular than others?
+    getNumericAttributeWithCaching( "SELECT ?o WHERE { <"+URI+"> <http://dbpedia.org/ontology/runtime> ?o}", featDict, 2800, 2800, "Runtime" ,featDict['uri'] , queryCache, cacheFile)
+    #13-totalLength
+    getNumericAttributeWithCaching("SELECT ?o WHERE { <"+URI+"> <http://dbpedia.org/property/totalLength> ?o}", featDict, 2900, 2900, "TotalLength" ,featDict['uri'] , queryCache, cacheFile)
 
     getAttributeWithCaching("SELECT ?o WHERE { <"+featDict['uri']+"> <http://dbpedia.org/property/collapsed> ?o}",featDict, queryCache, cacheFile)
     getAttributeWithCaching("SELECT ?o WHERE { <"+featDict['uri']+"> <http://dbpedia.org/property/award> ?o}",featDict, queryCache, cacheFile)
@@ -42,6 +38,23 @@ def populateFeatureAll (featDict, queryCache, cacheFile):
     getAttributeWithCaching("SELECT ?o WHERE { <"+featDict['uri']+"> <http://dbpedia.org/property/extraColumn> ?o}",featDict, queryCache, cacheFile)
     getAttributeWithCaching("SELECT ?o WHERE { <"+featDict['uri']+"> <http://dbpedia.org/property/extra> ?o}",featDict, queryCache, cacheFile)
     getAttributeWithCaching("SELECT ?o WHERE { <"+featDict['uri']+"> <http://dbpedia.org/property/type> ?o}",featDict, queryCache, cacheFile)
+def populateFeaturesNumeric (featDict, queryCache, cacheFile):
+    URI = featDict['uri']
+    #6- How many other albums producer have?
+    getNumericAttributeWithCaching( "SELECT count(?s) as ?o WHERE {  <"+URI+"> <http://dbpedia.org/ontology/producer> ?o1. ?s  <http://dbpedia.org/ontology/producer> ?o1}", featDict, 40, 40, "Producer",featDict['uri'] , queryCache, cacheFile)
+    #8- Are long albums more popular than others?
+    getNumericAttributeWithCaching( "SELECT ?o WHERE { <"+URI+"> <http://dbpedia.org/ontology/runtime> ?o}", featDict, 2800, 2800, "Runtime" ,featDict['uri'] , queryCache, cacheFile)
+    #9-Number of awards of an artist
+    getNumericAttributeWithCaching("SELECT  count(?o1) as ?o WHERE { <"+URI+">  <http://dbpedia.org/ontology/artist> ?artist. ?artist <http://dbpedia.org/property/award> ?o1}", featDict, 3, 3, "ArtistAward" ,featDict['uri'] , queryCache, cacheFile)
+    #13-totalLength
+    getNumericAttributeWithCaching("SELECT ?o WHERE { <"+URI+"> <http://dbpedia.org/property/totalLength> ?o}", featDict, 2900, 2900, "TotalLength" ,featDict['uri'] , queryCache, cacheFile)
+
+def populateFeaturesAggregated (featDict, queryCache, cacheFile):
+    URI = featDict['uri']
+    #6- How many other albums producer have?
+    getNumericAttributeWithCaching( "SELECT count(?s) as ?o WHERE {  <"+URI+"> <http://dbpedia.org/ontology/producer> ?o1. ?s  <http://dbpedia.org/ontology/producer> ?o1}", featDict, 40, 40, "Producer",featDict['uri'] , queryCache, cacheFile)
+    #9-Number of awards of an artist
+    getNumericAttributeWithCaching("SELECT  count(?o1) as ?o WHERE { <"+URI+">  <http://dbpedia.org/ontology/artist> ?artist. ?artist <http://dbpedia.org/property/award> ?o1}", featDict, 3, 3, "ArtistAward" ,featDict['uri'] , queryCache, cacheFile)
 
 def getAttributeWithCaching( sparqlquery, featDict,queryCache, cacheFile):
     sparqlqueryBase = sparqlquery[sparqlquery.index("{") + 1:sparqlquery.rindex("}")]
@@ -115,11 +128,11 @@ def getNumericAttributeLocal  (sparqlquery, featDict, high, low, name ):
             for result in results["results"]["bindings"]:
                 try:
                     if int(float(result["o"]["value"].split("/")[4]))>= high:
-                        featDict.update({name:"High"})
+                        featDict.update({name+"High":1})
                     if int(float(result["o"]["value"].split("/")[4]))< high and int(float(result["o"]["value"].split("/")[4]))>low :
-                        featDict.update({name:"Mid"})
+                        featDict.update({name+"Mid":1})
                     if int(float(result["o"]["value"].split("/")[4]))<=low :
-                        featDict.update({name:"Low"})
+                        featDict.update({name+"Low":1})
                 except BaseException as b:
                     print (b)
             onerror=0
